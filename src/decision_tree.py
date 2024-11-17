@@ -1,4 +1,4 @@
-import numpy as numpy_library
+import numpy as np
 
 
 class DecisionTree:
@@ -7,7 +7,7 @@ class DecisionTree:
         self.maximum_depth = maximum_depth
 
     def fit(self, features, labels):
-        self.number_of_classes = len(numpy_library.unique(labels))
+        self.number_of_classes = len(np.unique(labels))
         self.tree = self.build_tree(features, labels, depth=0)
 
     # Tree will start from depth 0 and build until maximum depth
@@ -15,7 +15,7 @@ class DecisionTree:
         number_of_samples, number_of_features = features.shape
 
         # Maximum depth is reached or node is pure
-        if depth >= self.maximum_depth or len(numpy_library.unique(labels)) == 1:
+        if depth >= self.maximum_depth or len(np.unique(labels)) == 1:
             leaf_value = self.find_most_common_label(labels)
             return leaf_value
 
@@ -37,7 +37,7 @@ class DecisionTree:
         best_feature, best_threshold = None, None
 
         for feature_index in range(number_of_features):
-            thresholds = numpy_library.unique(features[:,  feature_index])
+            thresholds = np.unique(features[:, feature_index])
             for threshold in thresholds:
                 gini_index = self.calculate_gini_index(features[:, feature_index], labels, threshold)
                 if gini_index < best_gini_index:
@@ -66,14 +66,14 @@ class DecisionTree:
 
     # Returns gini impurity for given subset
     def calculate_gini(self, label_subset):
-        classes, counts = numpy_library.unique(label_subset, return_counts=True)
+        classes, counts = np.unique(label_subset, return_counts=True)
         probabilities = counts / counts.sum()
-        return 1 - numpy_library.sum(probabilities ** 2)
+        return 1 - np.sum(probabilities ** 2)
 
     # Returns label with the majority of the samples in node
     def find_most_common_label(self, labels):
-        classes, counts = numpy_library.unique(labels, return_counts=True)
-        most_common_class = classes[numpy_library.argmax(counts)]
+        classes, counts = np.unique(labels, return_counts=True)
+        most_common_class = classes[np.argmax(counts)]
         return most_common_class
 
     def traverse_tree(self, feature_vector, node):
@@ -86,6 +86,6 @@ class DecisionTree:
             return self.traverse_tree(feature_vector, right_subtree)
 
     def predict(self, features):
-        return numpy_library.array([self.traverse_tree(feature_vector, self.tree) for feature_vector in features])
+        return np.array([self.traverse_tree(feature_vector, self.tree) for feature_vector in features])
 
 
