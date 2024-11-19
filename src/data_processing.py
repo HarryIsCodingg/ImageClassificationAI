@@ -1,3 +1,6 @@
+import os.path
+import pickle
+
 import numpy as np
 import torch
 import torchvision
@@ -5,9 +8,11 @@ import torchvision.transforms as transforms
 from torch.utils.data import DataLoader, Subset
 from torchvision import models
 from torchvision.models import ResNet18_Weights
-from Gaussian_Naive_Bayes import GaussianNaiveBayes
+from gaussian_naive_bayes import GaussianNaiveBayes
+from decision_tree import DecisionTree
 from sklearn.decomposition import PCA
 from sklearn.naive_bayes import GaussianNB
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 
 
@@ -67,6 +72,15 @@ pca = PCA(50)
 train_features_pca = pca.fit_transform(training_features)
 test_features_pca = pca.transform(validation_features)
 
+def save_model(model, file_name):
+    with open(file_name, 'wb') as saved_model_file:
+        pickle.dump(model, saved_model_file)
+
+def load_model(file_name):
+    with open(file_name, 'rb') as load_model_file:
+        return pickle.load(load_model_file)
+
+
 def evaluate(predictions, model, y_true):
     accuracy = accuracy_score(y_true, predictions)
     conf_matrix = confusion_matrix(y_true, predictions)
@@ -75,6 +89,7 @@ def evaluate(predictions, model, y_true):
     print(f"Accuracy ({model}):", accuracy)
     print(f"Confusion Matrix ({model}):\n", conf_matrix)
     print(f"Classification Report ({model}):\n", report)
+
 
 
 # Manual Gaussian Naive Bayes
@@ -88,3 +103,22 @@ print("\nScikit-Learn Gaussian Naive Bayes Results:")
 sklearn_gnb = GaussianNB()
 sklearn_gnb.fit(train_features_pca, training_labels)
 evaluate(sklearn_gnb.predict(test_features_pca), "Scikit-Learn", validation_labels)
+
+# Manual Decision Tree
+decision_tree = DecisionTree()
+decision_tree_trained_model_path = "./models/decision_tree.pkl"
+if os.path.exists(decision_tree_trained_model_path):
+    print("Loading saved model of decision tree\n")
+    decision_tree = load_model(decision_tree_trained_model_path)
+else:
+    print("Training and saving the model of decision tree\n")
+    decision_tree.fit(train_features_pca, training_labels)
+    save_model(decision_tree, decision_tree_trained_model_path)
+print("Manual Decision Tree Results:")
+evaluate(decision_tree.predict(test_features_pca), "Manual decision tree", validation_labels)
+
+# Scikit-Learn Decision Tree
+print("\nScikit-Learn decision tree Results:")
+sklearn_decision_tree = DecisionTreeClassifier()
+sklearn_decision_tree.fit(train_features_pca, training_labels)
+evaluate(sklearn_decision_tree.predict(test_features_pca), "Scikit-Learn", validation_labels)
