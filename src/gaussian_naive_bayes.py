@@ -18,11 +18,13 @@ class GaussianNaiveBayes:
     def predict(self, X):
         return np.array([self.get_posterior(x) for x in X])
 
+    # calculate the likelihood
     def get_likelihood(self, mean, var, x):
         coefficient = 1.0 / np.sqrt(2.0 * np.pi * var)
         exponent = np.exp(- (x - mean) ** 2 / (2 * var))
         return coefficient * exponent
 
+    # calculate the posterior for data
     def get_posterior(self, x):
         posteriors = []
         for label in self.labels:

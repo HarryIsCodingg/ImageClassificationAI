@@ -3,6 +3,7 @@ from torch import nn, optim
 
 class MLP(nn.Module):
 
+    # initialization of hidden layers
     def __init__(self, device):
         super(MLP, self).__init__()
         self.layers = nn.Sequential(
@@ -18,6 +19,7 @@ class MLP(nn.Module):
     def forward(self, x):
         return self.layers(x)
 
+    # training model with SGD optimizer and cross entry loss function
     def train_model(self, epochs, learning_rate, train_loader):
         self.train()
 
@@ -37,4 +39,4 @@ class MLP(nn.Module):
                 optimizer.step()
                 epoch_loss += loss.item()
 
-            print("Training Epoch is %d of %d and Current Loss is %.4f" % (epoch + 1, epochs, epoch_loss))
+            print("Training Epoch is %d of %d and Current Loss is %.4f" % (epoch + 1, epochs, epoch_loss / len(train_loader)))
