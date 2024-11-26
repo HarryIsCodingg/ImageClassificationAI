@@ -371,7 +371,7 @@ def load_all_trained_mlp_models(device, test_features_pca, validation_labels, pa
     evaluate_mlp_model(mlp_experiment4, "MLP Experiment 4", test_features_pca, validation_labels)
 
 
-# Evaluation for validation
+#   Evaluation for validation
 def evaluate_cnn_model(cnn_model, model_name, validation_data_loader, device):
     cnn_model.eval()
     predictions = []
@@ -393,7 +393,7 @@ def evaluate_cnn_model(cnn_model, model_name, validation_data_loader, device):
     return evaluate(predictions, model_name, labels)
 
 
-# Helper method to train cnn model
+#   Helper method to train cnn model
 def train_evaluate_cnn(device, model_name, training_data_loader, validation_data_loader, epochs, learning_rate, path, cnn_model):
     cnn = cnn_model(device)
 
@@ -456,7 +456,7 @@ def train_all_cnn_models(device, training_data_loader, validation_data_loader):
     train_evaluate_cnn(device, "CNN 7X7 Kernel", training_data_loader, validation_data_loader, epochs=10, learning_rate=0.01,
                        path=os.path.join(base_cnn_directory, "cnn_kernel_7X7.pth"), cnn_model=CNN_KERNEL_7X7)
 
-
+#   Load all trained cnn models
 def load_all_trained_cnn_models(device, validation_data_loader, path="trained_models/cnn"):
     accuracies = []
     model_names = []
@@ -554,7 +554,8 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     training_data_loader, validation_data_loader = load_data()
     train_features_pca, training_labels, test_features_pca, validation_labels = extract_pca_features(training_data_loader, validation_data_loader, device)
-
+    
+    # Input 1 to load the models and 2 to train the models
     while True:
         option = input("Enter 1 to load a model or 2 to train a model or 3 to exit: ").strip()
         if option == "1":
