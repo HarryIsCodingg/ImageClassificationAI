@@ -426,35 +426,38 @@ def train_all_cnn_models(device, training_data_loader, validation_data_loader):
 
     base_cnn_directory = "train_again_models/cnn"
 
+    if not os.path.exists(base_cnn_directory):
+        os.makedirs(base_cnn_directory)
+
     # Train default CNN
     print("\nTraining default CNN model:")
     train_evaluate_cnn(device, "Default CNN", training_data_loader, validation_data_loader, epochs=10, learning_rate=0.01,
-                       path=os.path.join(base_cnn_directory, "cnn.pth"), cnn_model=CNN)
+                       path=f"{base_cnn_directory}/cnn.pth", cnn_model=CNN)
 
     # Train CNN with increased depth
     print("\nTraining CNN with increased depth:")
     train_evaluate_cnn(device, "CNN Increased Depth", training_data_loader, validation_data_loader, epochs=10, learning_rate=0.01,
-                       path=os.path.join(base_cnn_directory, "cnn_increased_depth.pth"), cnn_model=CNN_INCREASED_DEPTH)
+                       path=f"{base_cnn_directory}/cnn_increased_depth.pth", cnn_model=CNN_INCREASED_DEPTH)
 
     # Train CNN with reduced depth
     print("\nTraining CNN with reduced depth:")
     train_evaluate_cnn(device, "CNN reduced depth", training_data_loader, validation_data_loader, epochs=10, learning_rate=0.01,
-                       path=os.path.join(base_cnn_directory, "cnn_reduced_depth.pth"), cnn_model=CNN_REDUCED_DEPTH)
+                       path=f"{base_cnn_directory}cnn_reduced_depth.pth", cnn_model=CNN_REDUCED_DEPTH)
 
     # Train CNN with 2x2 kernel
     print("\nTraining CNN with 2x2 kernel:")
     train_evaluate_cnn(device, "CNN 2X2 Kernel", training_data_loader, validation_data_loader, epochs=10, learning_rate=0.01,
-                       path=os.path.join(base_cnn_directory, "cnn_kernel_2X2.pth"), cnn_model=CNN_KERNEL_2X2)
+                       path=f"{base_cnn_directory}/cnn_kernel_2X2.pth", cnn_model=CNN_KERNEL_2X2)
 
     # Train CNN with 5x5 kernel
     print("\nTraining CNN with 5x5 kernel:")
     train_evaluate_cnn(device, "CNN 5X5 Kernel", training_data_loader, validation_data_loader, epochs=10, learning_rate=0.01,
-                       path=os.path.join(base_cnn_directory, "cnn_kernel_5X5.pth"), cnn_model=CNN_KERNEL_5X5)
+                       path=f"{base_cnn_directory}/cnn_kernel_5X5.pth", cnn_model=CNN_KERNEL_5X5)
 
     # Train CNN with 7x7 kernel
     print("\nTraining CNN with 7x7 kernel:")
     train_evaluate_cnn(device, "CNN 7X7 Kernel", training_data_loader, validation_data_loader, epochs=10, learning_rate=0.01,
-                       path=os.path.join(base_cnn_directory, "cnn_kernel_7X7.pth"), cnn_model=CNN_KERNEL_7X7)
+                       path=f"{base_cnn_directory}/cnn_kernel_7X7.pth", cnn_model=CNN_KERNEL_7X7)
 
 #   Load all trained cnn models
 def load_all_trained_cnn_models(device, validation_data_loader, path="trained_models/cnn"):
