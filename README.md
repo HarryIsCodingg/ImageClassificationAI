@@ -1,6 +1,3 @@
-AI Image classification project from:
-### Harinder Partap Singh 40076200
-
 # Setup to run the project
 Note: Python version 3 is recommended and use the command line tool to do the setup and run the project
 
